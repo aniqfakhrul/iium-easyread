@@ -1,0 +1,7 @@
+Pillow
+
+[gui]
+tkinter
+
+[test]
+pdfrw

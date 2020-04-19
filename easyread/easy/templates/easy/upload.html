@@ -1,0 +1,8 @@
+	<div class="share-post">
+		<h2>Upload File</h2>
+		<form class="share-form" action="{% url 'home:index' %}" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ form }}
+			<input type="submit" value="Share">
+		</form>
+	</div>

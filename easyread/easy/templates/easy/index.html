@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Diana-Ionescu.ro">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <title>My School Timetable</title>
+    <style type="text/css">
+      @page{size:A4 landscape;margin:20mm 10mm}
+      html,body{margin:0;padding:0}
+      sub,sup{font-size:75%}
+      #grid-wrapper{font-family:"Roboto";position:relative}
+      .tile{margin:0.1055%;position:absolute;vertical-align:top;width:10.9%}
+      .tile-content-1{left:0;line-height:1.3em;margin:0 2.5%;overflow:hidden;text-align:center;text-overflow:ellipsis;text-shadow:0 1px 0 rgba(0,0,0,.2);position:absolute;top:50%;transform:translate(0,-50%);width:95%}
+      .tile-content-2{bottom:0;line-height:1.3em;margin:0 2.5%;overflow:hidden;position:absolute;text-align:center;text-overflow:ellipsis;text-shadow:0 1px 0 rgba(0,0,0,.2);vertical-align:top;width:95%}
+      .grid-color-0{background-color:#eee;color:#333}
+    </style>
+  </head>
+  <body>
+    {% for class in all_course %}
+    {{ class }}
+    {% endfor %}
+    <div id="grid-wrapper">
+      <div class="tile" data-pos-x="0" data-pos-y="0">
+        <div class="tile-content-1" style="font-size:100%"></div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="0" data-pos-y="1">
+        <div class="tile-content-1" style="font-size:100%">Monday</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="0" data-pos-y="2">
+        <div class="tile-content-1" style="font-size:100%">Tuesday</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="0" data-pos-y="3">
+        <div class="tile-content-1" style="font-size:100%">Wednesday</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="0" data-pos-y="4">
+        <div class="tile-content-1" style="font-size:100%">Thursday</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="0" data-pos-y="5">
+        <div class="tile-content-1" style="font-size:100%">Friday</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="1" data-pos-y="0">
+        <div class="tile-content-1" style="font-size:100%">8.00 – 9.00</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="2" data-pos-y="0">
+        <div class="tile-content-1" style="font-size:100%">9.00 – 10.00</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="3" data-pos-y="0">
+        <div class="tile-content-1" style="font-size:100%">10.00 – 11.00</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="4" data-pos-y="0">
+        <div class="tile-content-1" style="font-size:100%">11.00 – 12.00</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="5" data-pos-y="0">
+        <div class="tile-content-1" style="font-size:100%">12.00 – 13.00</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="6" data-pos-y="0">
+        <div class="tile-content-1" style="font-size:100%">13.00 – 14.00</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="7" data-pos-y="0">
+        <div class="tile-content-1" style="font-size:100%">14.00 – 15.00</div>
+        <div class="tile-content-2"></div>
+      </div>
+      <div class="tile grid-color-0" data-pos-x="8" data-pos-y="0">
+        <div class="tile-content-1" style="font-size:100%">15.00 – 16.00</div>
+        <div class="tile-content-2"></div>
+      </div>
+    </div>
+    <script>
+      var wWidth=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth),
+        margin,tileHeight,gridItems,i,j,x,y,rows,cols;
+      document.getElementById("grid-wrapper").style.width=wWidth+"px";
+      tileHeight=Math.floor(0.0545*wWidth);
+      margin=Math.round(0.00211*wWidth);
+      document.getElementById("grid-wrapper").style.height=Math.floor(6*(tileHeight+margin))+"px";
+      document.getElementById("grid-wrapper").style.fontSize=Math.floor(0.00991*wWidth)+"px";
+      gridItems=document.getElementsByClassName("tile");
+      for(i=0;i<gridItems.length;i++){
+        rows=parseInt(gridItems[i].getAttribute("data-height"))||1;
+        cols=parseInt(gridItems[i].getAttribute("data-width"))||1;
+        gridItems[i].style.height=(rows*tileHeight+(rows-1)*margin)+"px";
+        gridItems[i].style.width=(cols*10.9+(cols-1)*0.211)+"%";
+        x=parseInt(gridItems[i].getAttribute("data-pos-x"));
+        y=parseInt(gridItems[i].getAttribute("data-pos-y"));
+        gridItems[i].style.top=(y*(tileHeight+margin)+margin/2)+"px";
+        gridItems[i].style.left=(x*11.111+0.1055)+"%";
+      }
+      gridItems=document.getElementsByClassName("tile-content-2");
+      for(i=0;i<gridItems.length;i++){
+        rows=parseInt(gridItems[i].parentNode.getAttribute("data-height"))||1;
+        gridItems[i].style.minHeight=Math.floor(rows*tileHeight/4)+"px";
+      }
+    </script>
+  </body>
+</html>
