@@ -11,7 +11,7 @@ YEAR = (
 
 class Post(models.Model):
 	title = models.CharField(max_length=100)
-	year = models.CharField(max_length=20, choices=YEAR, default="Year1")
+	year = models.CharField(max_length=20, choices=YEAR, default="Year 1")
 	photo = models.ImageField()
 
 	def __str__(self):
@@ -21,7 +21,7 @@ class Course(models.Model):
 	course_code = models.CharField(max_length=15)
 	course_name = models.CharField(max_length=100)
 	credit_hour = models.FloatField()
-	# year = models.ManyToManyField(YEAR, blank=True, related_name='year')
+	# year = models.CharField(max_length=20, choices=YEAR, default="Year1")
 
 	def __str__(self):
 		return "{0} {1}".format(self.course_code, self.course_name)

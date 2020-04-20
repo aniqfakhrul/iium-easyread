@@ -22,6 +22,7 @@ days = {
 	"MW" : ['Monday', 'Wednesday'],
 	"TUE" : ["Tuesday"],
 	"AH" : ["Tuesday", "Thursday"],
+	"T-TH" : ["Tuesday", "Thursday"],
 	"WED" : ["Wednesday"],
 	"THUR" : ["Thursday"],
 	"FRI" : ["Friday"],
@@ -29,12 +30,17 @@ days = {
 
 time = {
 	"500-7" : ['5:00 PM','7:00 PM'],
+	"5.00 -7" : ['5:00 PM','7:00 PM'],
 	"830 -950" : ['8:30 AM','9:50 AM'],
+	"8.30 -9.50" : ['8:30 AM','9:50 AM'],
 	"330 -450" : ['3:30 PM','4:50 PM'],
+	"3.30 -4.50" : ['3:30 PM','4:50 PM'],
 	"1030-1220" : ['10:30 AM','12:20 PM'],
+	"10.30 - 12.20" : ['10:30 AM','12:20 PM'],
 	"10.00 «11.20" : ['10:00 AM','11:20 AM'],
+	"10.00 - 11.20" : ['10:00 AM','11:20 AM'],
 	"200 -320" : ['2:00 PM','3:20 PM'],
-	"1030-1220" : ['10:30 AM','12:20 PM'],
+	"2.00 -3.20" : ['2:00 PM','3:20 PM'],
 	"1.50" : ['12:00 PM','1:50 PM'],
 }
 
@@ -50,7 +56,7 @@ course = {
 }
 # course["time"] = []
 
-image = Image.open('testimage.png')
+image = Image.open('lol.png')
 text = pytesseract.image_to_string(image).upper()
 # print(text)
 # print (courses)
@@ -80,7 +86,7 @@ def queries(lines):
 				course.update({"day":v})
 				break
 
-		#get class time
+		#get class time ##PROBLEM WITH LINES WITHOUT SPACES
 		for k, v in time.items():
 			if k in line:
 				# course['time']['start'] = v[0]
@@ -99,9 +105,9 @@ def queries(lines):
 
 with open("text_file") as f:
 	text = f.readlines()
-head = text.index("COURSE SEC STA TITLE CHR DAY TIME VENUE\n")
-tail = text.index("ANNOUNCEMENT FROM ACADEMIC MANAGEMENT AND ADMISSION DIVISION\n")
-lines = text[head:tail]
+# head = text.index("COURSE SEC STA TITLE CHR DAY TIME VENUE\n")
+# tail = text.index("ANNOUNCEMENT FROM ACADEMIC MANAGEMENT AND ADMISSION DIVISION\n")
+lines = text
 queries = queries(lines)
 for i in queries:
 	print(i['code'] +" : "+ i['name'])
@@ -109,7 +115,6 @@ for i in queries:
 	print("Start: "+i['time']['start'])
 	print("End: " + i['time']['end'])
 	print(i['venue'])
-# print (all_course)
 
 
 # with open("text_file", 'w') as f:

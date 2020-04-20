@@ -24,7 +24,7 @@ def index(request):
 			file.close()
 			# return redirect(reverse('home:schedule', kwargs={'classname': instance.title}))
 			return redirect('home:schedule')
-			# return render(request,'easy/index.html',{"all_course":query} )
+			# return render(request,'easy/index.html',{'queries':query} )
 	else:
 		form = forms.UploadPost()
 	return render(request, 'easy/upload.html', {'form': form})
@@ -32,9 +32,9 @@ def index(request):
 def timetable(request):
 	with open("text_file") as f:
 		text = f.readlines()
-	head = text.index("COURSE SEC STA TITLE CHR DAY TIME VENUE\n")
-	tail = text.index("ANNOUNCEMENT FROM ACADEMIC MANAGEMENT AND ADMISSION DIVISION\n")
-	lines = text[head:tail]
+	# head = text.index("COURSE SEC STA TITLE CHR DAY TIME VENUE\n")
+	# tail = text.index("ANNOUNCEMENT FROM ACADEMIC MANAGEMENT AND ADMISSION DIVISION\n")
+	lines = text
 	query = util.queries(lines)
 	# return HttpResponse(query)
 	return render(request, 'easy/index.html', {'queries':query})
