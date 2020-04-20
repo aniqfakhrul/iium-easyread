@@ -2,6 +2,7 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 import re
+from .models import Course, Student
 
 query = {}
 courses =	{
@@ -52,13 +53,14 @@ def queries(lines):
 		if re.findall('\\b AM\\b', line):
 			course.update({"venue" : line[line.find(' AM')+3:].lstrip()})
 		elif re.findall('\\b PM\\b', line):
-			course.update({"venue" : line[line.find(' PM')+3:].lstrip()})
+			course.update({"venue" : line[line.find(' PM')+3:].lstrip().strip("\n")})
 
 		#get couse code and name
-		for course_id, course_name in courses.items():
-			if (course_id in line) or (course_id.replace(" ","") in line): #check available course code
-				course.update({"code" : course_id.replace(" ","")})
-				course.update({"name" : course_name})
+		posts = Course.objects.all()
+		for post in posts:
+			if (post.course_code in line) or (post.course_code.replace(" ","") in line): #check available course code
+				course.update({"code" : post.course_code.replace(" ","")})
+				course.update({"name" : post.course_name})
 				break
 
 		#get class day
@@ -70,6 +72,10 @@ def queries(lines):
 		#get class time
 		for k, v in time.items():
 			if k in line:
-				course.update({"time":v})
+				# course.update({"time":v})
+				innerDict = {"start":v[0], "end":v[1]}
+				course["time"]=innerDict
 				all_course.append(course.copy())
+				# Student.objects.create(name='Aniqq', data={course})
 				break
+	return all_course

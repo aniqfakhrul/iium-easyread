@@ -1,108 +1,209 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="author" content="Diana-Ionescu.ro">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Roboto&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">
-    <title>My School Timetable</title>
-    <style type="text/css">
-      @page{size:A4 landscape;margin:20mm 10mm}
-      html,body{margin:0;padding:0}
-      sub,sup{font-size:75%}
-      #grid-wrapper{font-family:"Roboto";position:relative}
-      .tile{margin:0.1055%;position:absolute;vertical-align:top;width:10.9%}
-      .tile-content-1{left:0;line-height:1.3em;margin:0 2.5%;overflow:hidden;text-align:center;text-overflow:ellipsis;text-shadow:0 1px 0 rgba(0,0,0,.2);position:absolute;top:50%;transform:translate(0,-50%);width:95%}
-      .tile-content-2{bottom:0;line-height:1.3em;margin:0 2.5%;overflow:hidden;position:absolute;text-align:center;text-overflow:ellipsis;text-shadow:0 1px 0 rgba(0,0,0,.2);vertical-align:top;width:95%}
-      .grid-color-0{background-color:#eee;color:#333}
-    </style>
-  </head>
-  <body>
-    {% for class in all_course %}
-    {{ class }}
-    {% endfor %}
-    <div id="grid-wrapper">
-      <div class="tile" data-pos-x="0" data-pos-y="0">
-        <div class="tile-content-1" style="font-size:100%"></div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="0" data-pos-y="1">
-        <div class="tile-content-1" style="font-size:100%">Monday</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="0" data-pos-y="2">
-        <div class="tile-content-1" style="font-size:100%">Tuesday</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="0" data-pos-y="3">
-        <div class="tile-content-1" style="font-size:100%">Wednesday</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="0" data-pos-y="4">
-        <div class="tile-content-1" style="font-size:100%">Thursday</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="0" data-pos-y="5">
-        <div class="tile-content-1" style="font-size:100%">Friday</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="1" data-pos-y="0">
-        <div class="tile-content-1" style="font-size:100%">8.00 – 9.00</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="2" data-pos-y="0">
-        <div class="tile-content-1" style="font-size:100%">9.00 – 10.00</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="3" data-pos-y="0">
-        <div class="tile-content-1" style="font-size:100%">10.00 – 11.00</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="4" data-pos-y="0">
-        <div class="tile-content-1" style="font-size:100%">11.00 – 12.00</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="5" data-pos-y="0">
-        <div class="tile-content-1" style="font-size:100%">12.00 – 13.00</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="6" data-pos-y="0">
-        <div class="tile-content-1" style="font-size:100%">13.00 – 14.00</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="7" data-pos-y="0">
-        <div class="tile-content-1" style="font-size:100%">14.00 – 15.00</div>
-        <div class="tile-content-2"></div>
-      </div>
-      <div class="tile grid-color-0" data-pos-x="8" data-pos-y="0">
-        <div class="tile-content-1" style="font-size:100%">15.00 – 16.00</div>
-        <div class="tile-content-2"></div>
-      </div>
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>document.getElementsByTagName("html")[0].className += " js";</script>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>Schedule Template | CodyHouse</title>
+</head>
+<body>
+<!--   <header class="cd-main-header text-center flex flex-column flex-center">
+    <p class="margin-top-md margin-bottom-xl">👈 <a class="cd-article-link" href="https://codyhouse.co/gem/schedule-template">Article &amp; Download</a></p>
+
+    <h1 class="text-xl">Schedule Template</h1>
+  </header> -->
+{% for query in queries %}
+  {{ query.time.start }}
+{% endfor %}
+  <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
+    <div class="cd-schedule__timeline">
+      <ul>
+        <li><span>09:00</span></li>
+        <li><span>09:30</span></li>
+        <li><span>10:00</span></li>
+        <li><span>10:30</span></li>
+        <li><span>11:00</span></li>
+        <li><span>11:30</span></li>
+        <li><span>12:00</span></li>
+        <li><span>12:30</span></li>
+        <li><span>13:00</span></li>
+        <li><span>13:30</span></li>
+        <li><span>14:00</span></li>
+        <li><span>14:30</span></li>
+        <li><span>15:00</span></li>
+        <li><span>15:30</span></li>
+        <li><span>16:00</span></li>
+        <li><span>16:30</span></li>
+        <li><span>17:00</span></li>
+        <li><span>17:30</span></li>
+        <li><span>18:00</span></li>
+      </ul>
+    </div> <!-- .cd-schedule__timeline -->
+  
+    <div class="cd-schedule__events">
+      <ul>
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Monday</span></div>
+  
+          <ul>
+            {% for query in queries %}
+            {% if 'Monday' in query.day %}
+            <li class="cd-schedule__event">
+              <a data-start="{{ query.time.start }}" data-end="{{ query.time.end }}" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                <em class="cd-schedule__name">{{ query.name }}</em>
+                <p>{{ query.venue }}</p>
+              </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </li>
+  
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Tuesday</span></div>
+  
+          <ul>
+            {% for query in queries %}
+            {% if 'Tuesday' in query.day %}
+            <li class="cd-schedule__event">
+              <a data-start="{{ query.time.start }}" data-end="{{ query.time.end }}" data-content="event-abs-circuit" data-event="event-2" href="#0">
+                <em class="cd-schedule__name">{{ query.name }}</em>
+                <p>{{ query.venue }}</p>
+              </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+  
+<!--             <li class="cd-schedule__event">
+              <a data-start="11:30" data-end="13:00"  data-content="event-restorative-yoga" data-event="event-4" href="#0">
+                <em class="cd-schedule__name">Restorative Yoga</em>
+              </a>
+            </li>
+  
+            <li class="cd-schedule__event">
+              <a data-start="13:30" data-end="15:00" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                <em class="cd-schedule__name">Abs Circuit</em>
+              </a>
+            </li>
+  
+            <li class="cd-schedule__event">
+              <a data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3" href="#0">
+                <em class="cd-schedule__name">Yoga Level 1</em>
+              </a>
+            </li> -->
+          </ul>
+        </li>
+  
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Wednesday</span></div>
+  
+          <ul>
+            <li class="cd-schedule__event">
+              <a data-start="09:00" data-end="10:15" data-content="event-restorative-yoga" data-event="event-4" href="#0">
+                <em class="cd-schedule__name">Restorative Yoga</em>
+              </a>
+            </li>
+  
+            <li class="cd-schedule__event">
+              <a data-start="10:45" data-end="11:45" data-content="event-yoga-1" data-event="event-3" href="#0">
+                <em class="cd-schedule__name">Yoga Level 1</em>
+              </a>
+            </li>
+  
+            <li class="cd-schedule__event">
+              <a data-start="12:00" data-end="13:45"  data-content="event-rowing-workout" data-event="event-2" href="#0">
+                <em class="cd-schedule__name">Rowing Workout</em>
+              </a>
+            </li>
+  
+            <li class="cd-schedule__event">
+              <a data-start="13:45" data-end="15:00" data-content="event-yoga-1" data-event="event-3" href="#0">
+                <em class="cd-schedule__name">Yoga Level 1</em>
+              </a>
+            </li>
+          </ul>
+        </li>
+  
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Thursday</span></div>
+  
+          <ul>
+            <li class="cd-schedule__event">
+              <a data-start="09:30" data-end="10:30" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                <em class="cd-schedule__name">Abs Circuit</em>
+              </a>
+            </li>
+  
+            <li class="cd-schedule__event">
+              <a data-start="12:00" data-end="13:45" data-content="event-restorative-yoga" data-event="event-4" href="#0">
+                <em class="cd-schedule__name">Restorative Yoga</em>
+              </a>
+            </li>
+  
+            <li class="cd-schedule__event">
+              <a data-start="15:30" data-end="16:30" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                <em class="cd-schedule__name">Abs Circuit</em>
+              </a>
+            </li>
+  
+            <li class="cd-schedule__event">
+              <a data-start="17:00" data-end="18:30"  data-content="event-rowing-workout" data-event="event-2" href="#0">
+                <em class="cd-schedule__name">Rowing Workout</em>
+              </a>
+            </li>
+          </ul>
+        </li>
+  
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Friday</span></div>
+  
+          <ul>
+            <li class="cd-schedule__event">
+              <a data-start="10:00" data-end="11:00"  data-content="event-rowing-workout" data-event="event-2" href="#0">
+                <em class="cd-schedule__name">Rowing Workout</em>
+              </a>
+            </li>
+  
+            <li class="cd-schedule__event">
+              <a data-start="12:30" data-end="14:00" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                <em class="cd-schedule__name">Abs Circuit</em>
+              </a>
+            </li>
+  
+            <li class="cd-schedule__event">
+              <a data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3" href="#0">
+                <em class="cd-schedule__name">Yoga Level 1</em>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
-    <script>
-      var wWidth=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth),
-        margin,tileHeight,gridItems,i,j,x,y,rows,cols;
-      document.getElementById("grid-wrapper").style.width=wWidth+"px";
-      tileHeight=Math.floor(0.0545*wWidth);
-      margin=Math.round(0.00211*wWidth);
-      document.getElementById("grid-wrapper").style.height=Math.floor(6*(tileHeight+margin))+"px";
-      document.getElementById("grid-wrapper").style.fontSize=Math.floor(0.00991*wWidth)+"px";
-      gridItems=document.getElementsByClassName("tile");
-      for(i=0;i<gridItems.length;i++){
-        rows=parseInt(gridItems[i].getAttribute("data-height"))||1;
-        cols=parseInt(gridItems[i].getAttribute("data-width"))||1;
-        gridItems[i].style.height=(rows*tileHeight+(rows-1)*margin)+"px";
-        gridItems[i].style.width=(cols*10.9+(cols-1)*0.211)+"%";
-        x=parseInt(gridItems[i].getAttribute("data-pos-x"));
-        y=parseInt(gridItems[i].getAttribute("data-pos-y"));
-        gridItems[i].style.top=(y*(tileHeight+margin)+margin/2)+"px";
-        gridItems[i].style.left=(x*11.111+0.1055)+"%";
-      }
-      gridItems=document.getElementsByClassName("tile-content-2");
-      for(i=0;i<gridItems.length;i++){
-        rows=parseInt(gridItems[i].parentNode.getAttribute("data-height"))||1;
-        gridItems[i].style.minHeight=Math.floor(rows*tileHeight/4)+"px";
-      }
-    </script>
-  </body>
+  
+    <div class="cd-schedule-modal">
+      <header class="cd-schedule-modal__header">
+        <div class="cd-schedule-modal__content">
+          <span class="cd-schedule-modal__date"></span>
+          <h3 class="cd-schedule-modal__name"></h3>
+        </div>
+  
+        <div class="cd-schedule-modal__header-bg"></div>
+      </header>
+  
+      <div class="cd-schedule-modal__body">
+        <div class="cd-schedule-modal__event-info"></div>
+        <div class="cd-schedule-modal__body-bg"></div>
+      </div>
+  
+      <a href="#0" class="cd-schedule-modal__close text-replace">Close</a>
+    </div>
+  
+    <div class="cd-schedule__cover-layer"></div>
+  </div> <!-- .cd-schedule -->
+
+  <script src="{% static 'js/util.js' %}"></script> <!-- util functions included in the CodyHouse framework -->
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
 </html>

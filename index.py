@@ -4,13 +4,14 @@ except ImportError:
     import Image
 import pytesseract
 import re
+import json
 
 query = {}
 courses =	{
   "CCSB 3211": "SWIMMING SKILLS 1 (BROTHER)",
   "INFO 3102": "DATA WAREHOUSING",
   "INFO 3305": "WEB APPLICATION DEVELOPMENT",
-  "INFO 3501": "PROJECT MANAGEMENT INIT",
+  "INFO 3501": "PROJECT MANAGEMENT IN IT",
   "LE 4000": "ENGLISH FOR ACADEMIC WRITING (EAW)",
   "MPU 3I12": "HUBUNGAN ETNIK",
   "UNGS 2011": "CREATIVE THINKING AND PROBLEM",
@@ -47,6 +48,7 @@ course = {
 	"time" : "",
 	"venue" : "",
 }
+# course["time"] = []
 
 image = Image.open('testimage.png')
 text = pytesseract.image_to_string(image).upper()
@@ -81,20 +83,29 @@ def queries(lines):
 		#get class time
 		for k, v in time.items():
 			if k in line:
-				course.update({"time":v})
+				# course['time']['start'] = v[0]
+				# course['time']['end'] = v[1]
+				innerDict = {"start":v[0], "end":v[1]}
+				course["time"]=innerDict
+				# print (course)
+				# course.update({"time":v})
 				all_course.append(course.copy())
 				break
+	return all_course
 
 with open("text_file") as f:
 	text = f.readlines()
 head = text.index("COURSE SEC STA TITLE CHR DAY TIME VENUE\n")
 tail = text.index("ANNOUNCEMENT FROM ACADEMIC MANAGEMENT AND ADMISSION DIVISION\n")
 lines = text[head:tail]
-query = queries(lines)
-for i in all_course:
+queries = queries(lines)
+json_dump = json.dumps(queries)
+# print(json_dump)
+for i in queries:
 	print(i['code'] +" : "+ i['name'])
 	print(i['day'])
-	print(i['time'])
+	print("Start: "+i['time']['start'])
+	print("End:" + i['time']['end'])
 	print(i['venue'])
 # print (all_course)
 
