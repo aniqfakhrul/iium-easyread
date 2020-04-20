@@ -23,7 +23,6 @@ def index(request):
 			file.write(text)
 			file.close()
 			# return redirect(reverse('home:schedule', kwargs={'classname': instance.title}))
-			# return HttpResponse(util.all_course)
 			return redirect('home:schedule')
 			# return render(request,'easy/index.html',{"all_course":query} )
 	else:
@@ -37,4 +36,5 @@ def timetable(request):
 	tail = text.index("ANNOUNCEMENT FROM ACADEMIC MANAGEMENT AND ADMISSION DIVISION\n")
 	lines = text[head:tail]
 	query = util.queries(lines)
+	# return HttpResponse(query)
 	return render(request, 'easy/index.html', {'queries':query})

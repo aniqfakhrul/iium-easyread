@@ -4,7 +4,7 @@ except ImportError:
     import Image
 import pytesseract
 import re
-import json
+from datetime import *
 
 query = {}
 courses =	{
@@ -21,21 +21,21 @@ days = {
 	"MON" : ['Monday'],
 	"MW" : ['Monday', 'Wednesday'],
 	"TUE" : ["Tuesday"],
-	"AH" : ["Tuesday", "Thursay"],
+	"AH" : ["Tuesday", "Thursday"],
 	"WED" : ["Wednesday"],
 	"THUR" : ["Thursday"],
 	"FRI" : ["Friday"],
 }
 
 time = {
-	"500-7" : ['5:00','7:00'],
-	"830 -950" : ['8:30','9:50'],
-	"330 -450" : ['3:30','4:50'],
-	"1030-1220" : ['10:30','12:20'],
-	"10.00 «11.20" : ['10:00','11:20'],
-	"200 -320" : ['2:00','3:20'],
-	"1030-1220" : ['10:30','12:20'],
-	"1.50" : ['12:00','1:50'],
+	"500-7" : ['5:00 PM','7:00 PM'],
+	"830 -950" : ['8:30 AM','9:50 AM'],
+	"330 -450" : ['3:30 PM','4:50 PM'],
+	"1030-1220" : ['10:30 AM','12:20 PM'],
+	"10.00 «11.20" : ['10:00 AM','11:20 AM'],
+	"200 -320" : ['2:00 PM','3:20 PM'],
+	"1030-1220" : ['10:30 AM','12:20 PM'],
+	"1.50" : ['12:00 PM','1:50 PM'],
 }
 
 timeunit = ['AM', 'PM']
@@ -85,7 +85,11 @@ def queries(lines):
 			if k in line:
 				# course['time']['start'] = v[0]
 				# course['time']['end'] = v[1]
-				innerDict = {"start":v[0], "end":v[1]}
+				v[0] = datetime.strptime(v[0], '%I:%M %p')
+				v[0] = datetime.strftime(v[0], "%H:%M")
+				v[1] = datetime.strptime(v[1], '%I:%M %p')
+				v[1] = datetime.strftime(v[1], "%H:%M")
+				innerDict = {"start":str(v[0]), "end":str(v[1])}
 				course["time"]=innerDict
 				# print (course)
 				# course.update({"time":v})
@@ -99,13 +103,11 @@ head = text.index("COURSE SEC STA TITLE CHR DAY TIME VENUE\n")
 tail = text.index("ANNOUNCEMENT FROM ACADEMIC MANAGEMENT AND ADMISSION DIVISION\n")
 lines = text[head:tail]
 queries = queries(lines)
-json_dump = json.dumps(queries)
-# print(json_dump)
 for i in queries:
 	print(i['code'] +" : "+ i['name'])
 	print(i['day'])
 	print("Start: "+i['time']['start'])
-	print("End:" + i['time']['end'])
+	print("End: " + i['time']['end'])
 	print(i['venue'])
 # print (all_course)
 
