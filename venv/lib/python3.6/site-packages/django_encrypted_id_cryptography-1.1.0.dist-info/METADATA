@@ -1,0 +1,196 @@
+Metadata-Version: 2.1
+Name: django-encrypted-id-cryptography
+Version: 1.1.0
+Summary: Encrypted IDs for Django Models
+Home-page: https://github.com/slinkymanbyday/django-encrypted-id-cryptography
+Author: Sean Meyer
+Author-email: slinkymabyday@gmail.com
+Maintainer: Sean Meyer
+Maintainer-email: slinkymabyday@gmail.com
+License: BSD
+Keywords: Django,Web
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: System Administrators
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Other Audience
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Software Development
+Requires-Dist: Django (>=1.11)
+Requires-Dist: cryptography
+
+======================
+Django Encrypted Id (cryptography)
+======================
+
+.. image:: https://badge.fury.io/py/django-encrypted-id-cryptography.svg
+    :target: https://badge.fury.io/py/django-encrypted-id-cryptography
+
+.. image:: https://travis-ci.org/slinkymanbyday/django-encrypted-id-cryptography.svg?branch=master
+    :target: https://travis-ci.org/slinkymanbyday/django-encrypted-id-cryptography
+
+
+django-encrypted-id-cryptography is a Django model which allows the use of encrypted ids for when you don't want to expose the regular pk.
+
+**Note: This is a fork from django-encrypted-id and acts *mostly* a drop in replacement, it requires an additional settings and the encrypted ids are not compaitable. It also uses a different crypto library**
+
+
+Requirements
+------------
+The following have been tested, however it should work with more.
+
+* Django [1.11, 2.0, 2.2]
+* Python [2.7, 3.5]
+* Cryptography
+
+Quickstart
+----------
+
+Install django-encrypted-id-cryptography::
+
+    pip install django-encrypted-id-cryptography
+
+
+Create an encryption key:
+
+.. code-block:: python
+
+    > from cryptography.fernet import Fernet
+    > Fernet.generate_key()
+
+    '3CNek72sQ3syTXX6h-Z1t3OLKKY1lfAgnTW_THUz37M='
+
+
+.. code-block:: python
+
+    ID_ENCRYPT_KEY = ['3CNek72sQ3syTXX6h-Z1t3OLKKY1lfAgnTW_THUz37M=']
+
+Features
+--------
+
+This password validator returns a ValidationError if the PWNED Passwords API
+detects the password in its data set. Note that the API is heavily rate-limited,
+so there is a timeout (:code:`PWNED_VALIDATOR_TIMEOUT`).
+
+If :code:`PWNED_VALIDATOR_FAIL_SAFE` is True, anything besides an API-identified bad password
+will pass, including a timeout. If :code:`PWNED_VALIDATOR_FAIL_SAFE` is False, anything
+besides a good password will fail and raise a ValidationError.
+
+
+Use
+--------
+
+Consider this example model:
+
+.. code-block:: python
+
+    from django.db import models
+
+    from encrypted_id.models import EncryptedIDModel
+
+
+    class Foo(EncryptedIDModel):
+        text = models.TextField()
+
+
+By inheriting from ``EncryptedIDModel``, you get .ekey as a property on your
+model instances. This is how they will look like:
+
+.. code-block:: python
+
+    In [1]: from tapp.models import Foo
+
+    In [2]: f = Foo.objects.create(text="asd")
+
+    In [3]: f.id
+    Out[3]: 1
+
+    In [4]: f.ekey
+    Out[4]: 'gAAAAABcyQ2WlhRT6zec6WCRMJ3mDkZL9SCy98JeMvrERki6DJgc3WeIRMbAMm86_zmV0sP3_iPvbAHGgb7RfEGrnIIYdggaig=='
+    You can do reverse lookup:
+
+    In [5]: from encrypted_id import decode
+
+    In [6]: decode(f.ekey)
+    Out[6]: 1
+
+If you can not inherit from the helper base class, no problem, you can just use
+the ``ekey()`` function from ``encrypted_id`` package:
+
+.. code-block:: python
+
+    In [7]: from encrypted_id import ekey
+
+    In [8]: from django.contrib.auth.models import User
+
+    In [9]: ekey(User.objects.get(pk=1))
+    Out[9]: 'gAAAAABcyQ2WlhRT6zec6WCRMJ3mDkZL9SCy98JeMvrERki6DJgc3WeIRMbAMm86_zmV0sP3_iPvbAHGgb7RfEGrnIIYdggaig=='
+
+
+To do the reverse lookup, you have two helpers available. First is provided by
+``EncryptedIDManager``, which is used by default if you inherit from
+``EncryptedIDModel``, and have not overwritten the ``.objects``:
+
+.. code-block:: python
+
+    In [10]: Foo.objects.get_by_ekey(f.ekey)
+    Out[10]: <Foo: Foo object>
+
+
+But sometimes you will prefer the form:
+
+.. code-block:: python
+
+    In [11]: Foo.objects.get_by_ekey_or_404(f.ekey)
+    Out[11]: <Foo: Foo object>
+
+
+Which works the same, but instead of raising ``DoesNotExist``, it raises
+``Http404``, so it can be used in views.
+
+You your manager is not inheriting from ``EncryptedIDManager``, you can use:
+
+.. code-block:: python
+
+    In [12]: e = ekey(User.objects.first())
+
+    In [13]: e
+    Out[13]: 'gAAAAABcyQ2WlhRT6zec6WCRMJ3mDkZL9SCy98JeMvrERki6DJgc3WeIRMbAMm86_zmV0sP3_iPvbAHGgb7RfEGrnIIYdggaig=='
+
+    In [14]: get_object_or_404(User, e)
+    Out[14]: <User: amitu>
+
+
+``encrypted_id.get_object_or_404``, as well as
+``EncryptedIDManager.get_by_ekey`` and
+``EncryptedIDManager.get_by_ekey_or_404`` take extra keyword argument, that can
+be used to filter if you want.
+
+If you are curious, the regex used to match the generated ids is:
+
+.. code-block:: python
+
+    "[0-9a-zA-Z-_=]+"
+
+
+Running Tests
+-------------
+
+::
+
+    source <YOURVIRTUALENV>/bin/activate
+    (myenv) $ pip install tox
+    (myenv) $ tox
+
+

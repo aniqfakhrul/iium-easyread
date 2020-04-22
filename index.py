@@ -56,7 +56,7 @@ course = {
 }
 # course["time"] = []
 
-image = Image.open('lol.png')
+image = Image.open('testimage.png')
 text = pytesseract.image_to_string(image).upper()
 # print(text)
 # print (courses)
@@ -67,40 +67,39 @@ file.close()
 
 def queries(lines):
 	for line in lines:
-		#get class venue
-		if re.findall('\\b AM\\b', line):
-			course.update({"venue" : line[line.find(' AM')+3:].lstrip()})
-		elif re.findall('\\b PM\\b', line):
-			course.update({"venue" : line[line.find(' PM')+3:].lstrip()})
-
+	# 	if re.findall('\\bPRINTED BY\\b', line):
+	# 		matric_no = line[line.find('PRINTED BY')+11:18]
+	# 		print(matric_no)
 		#get couse code and name
 		for course_id, course_name in courses.items():
 			if (course_id in line) or (course_id.replace(" ","") in line): #check available course code
 				course.update({"code" : course_id.replace(" ","")})
-				course.update({"name" : course_name})
-				break
+				course.update({"name" : course_name})				
+				#get class venue
+				if re.findall('\\b AM\\b', line):
+					course.update({"venue" : line[line.find(' AM')+3:].lstrip()})
+				elif re.findall('\\b PM\\b', line):
+					course.update({"venue" : line[line.find(' PM')+3:].lstrip()})
+				#get class day
+				for k, v in days.items():
+					if k in line:
+						course.update({"day":v})
 
-		#get class day
-		for k, v in days.items():
-			if k in line:
-				course.update({"day":v})
-				break
-
-		#get class time ##PROBLEM WITH LINES WITHOUT SPACES
-		for k, v in time.items():
-			if k in line:
-				# course['time']['start'] = v[0]
-				# course['time']['end'] = v[1]
-				v[0] = datetime.strptime(v[0], '%I:%M %p')
-				v[0] = datetime.strftime(v[0], "%H:%M")
-				v[1] = datetime.strptime(v[1], '%I:%M %p')
-				v[1] = datetime.strftime(v[1], "%H:%M")
-				innerDict = {"start":str(v[0]), "end":str(v[1])}
-				course["time"]=innerDict
-				# print (course)
-				# course.update({"time":v})
-				all_course.append(course.copy())
-				break
+				#get class time ##PROBLEM WITH LINES WITHOUT SPACES
+				for k, v in time.items():
+					if k in line:
+						# course['time']['start'] = v[0]
+						# course['time']['end'] = v[1]
+						v[0] = datetime.strptime(v[0], '%I:%M %p')
+						v[0] = datetime.strftime(v[0], "%H:%M")
+						v[1] = datetime.strptime(v[1], '%I:%M %p')
+						v[1] = datetime.strftime(v[1], "%H:%M")
+						innerDict = {"start":str(v[0]), "end":str(v[1])}
+						course["time"]=innerDict
+						# print (course)
+						# course.update({"time":v})
+						all_course.append(course.copy())
+						break
 	return all_course
 
 with open("text_file") as f:

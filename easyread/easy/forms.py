@@ -3,5 +3,5 @@ from . import models
 
 class UploadPost(forms.ModelForm):
 	class Meta:
-		model = models.Post
-		fields = ['year','photo']
+		model = models.Document
+		fields = ['kulliya','photo']
