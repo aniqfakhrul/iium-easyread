@@ -6,4 +6,4 @@ git clone https://github.com/aniqfakhrul/iium-easyread/ \
 cd iium-easyread\
 pip install -r requirements\
 cd easyread\
-python manage.py runserver\
+python manage.py runserver
