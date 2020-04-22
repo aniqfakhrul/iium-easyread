@@ -20,9 +20,12 @@ courses =	{
 days = {
 	"MON" : ['Monday'],
 	"MW" : ['Monday', 'Wednesday'],
+	"UW" : ['Monday', 'Wednesday'],
+	"MAW" : ['Monday', 'Wednesday'],
 	"TUE" : ["Tuesday"],
 	"AH" : ["Tuesday", "Thursday"],
 	"T-TH" : ["Tuesday", "Thursday"],
+	"TH" : ["Tuesday", "Thursday"],
 	"WED" : ["Wednesday"],
 	"THUR" : ["Thursday"],
 	"FRI" : ["Friday"],
@@ -41,7 +44,10 @@ time = {
 	"10.00 - 11.20" : ['10:00 AM','11:20 AM'],
 	"200 -320" : ['2:00 PM','3:20 PM'],
 	"2.00 -3.20" : ['2:00 PM','3:20 PM'],
-	"1.50" : ['12:00 PM','1:50 PM'],
+	"500 -7" : ['5:00 PM','7:00 PM'],
+	"11.90 - 1250" : ['11:30 AM','12:50 PM'],
+	"3.30 -450" : ['3:30 PM','4:50 PM'],
+	"11.30 -1250" : ['11:30 AM','12:50 PM'],
 }
 
 timeunit = ['AM', 'PM']
@@ -56,7 +62,7 @@ course = {
 }
 # course["time"] = []
 
-image = Image.open('testimage.png')
+image = Image.open('nanaer.png')
 text = pytesseract.image_to_string(image).upper()
 # print(text)
 # print (courses)

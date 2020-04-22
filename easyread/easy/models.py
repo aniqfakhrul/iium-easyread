@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 
 KULLIYA = (
-    ('HS','ALLIED HEALTH SCIENCES'),
+    ('AHS','ALLIED HEALTH SCIENCES'),
+    ('HS','HUMAN SCIENCES'),
     ('KAED','ARCHITECTURE'),
     ('CELPAD','CELPAD'),
     ('COCU','COCU'),
@@ -36,8 +38,14 @@ class Document(models.Model):
 		return str(self.id)
 
 	def save(self):
-		head, sed, file_name = (self.photo.name).partition("_")
-		self.unique_id = file_name[:-4]
+		# head, sed, file_name = (self.photo.name).partition("_")
+		# self.unique_id = file_name[:-4]
+		# super(Document, self).save()
+		if not self.unique_id:
+			# Generate ID once, then check the database. If exists, keep trying.
+			self.unique_id = generate_random_string()
+			while Document.objects.filter(unique_id=self.unique_id).exists():
+				self.unique_id = generate_random_string()
 		super(Document, self).save()
 
 
@@ -57,3 +65,32 @@ class Course(models.Model):
 	def save(self):
 	       self.course_name = self.course_name.title()
 	       super(Course, self).save()
+
+class Time(models.Model):
+	time_input = models.CharField(max_length=15)
+	time_output = ArrayField(models.CharField(max_length=10, blank=True), size=2)
+
+	class Meta:
+		unique_together = ["time_input"]
+
+	def __str__(self):
+		return "{0}".format(self.time_input)
+
+	def save(self):
+	       self.course_name = self.course_name.title()
+	       super(Course, self).save()
+
+
+import string
+import random
+
+LENGTH = 11
+
+
+def generate_random_string():
+    """
+    Generates random ID.
+    """
+    random_string = string.digits + string.ascii_uppercase
+    new_id = ''.join([random.SystemRandom().choice(random_string) for i in range(random.randint(11, LENGTH))])
+    return new_id

@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Contact V3</title>
+	<title>EasyRead</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -34,21 +34,24 @@
 </head>
 <body>
 
-	<div class="bg-contact3" style="background-image: url('images/bg-01.jpg');">
+	<div class="bg-contact3" style="background-image: url({% static 'background1.jpg' %});background-size: cover">
 		<div class="container-contact3">
 			<div class="wrap-contact3">
 				<form class="contact3-form validate-form"action="{% url 'home:index' %}" method="post" enctype="multipart/form-data">
 					<span class="contact3-form-title">
-						IIUM - EASYREAD
+						EasyRead - IIUM
 					</span>
-
+					 <label style="margin-right: 10px; color:white; font-weight: bold">Course </label>
 					<div class="wrap-contact3-form-radio">
 <!-- Put here
  -->
  {% csrf_token %}
  {{form.kulliya}}
- {{form.photo}}
 					</div>
+ <label style="margin-right: 10px; color:white; font-weight: bold">Upload </label>
+<div class="wrap-contact3-form-radio">
+ {{form.photo}}
+</div>
 
 
 					<div class="container-contact3-form-btn">
